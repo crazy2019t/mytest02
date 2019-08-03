@@ -1,0 +1,73 @@
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/getParameter.js"></script>
+<script>
+    $.post("/travel7/user","action=findUserInfo",function (result) {
+        var data = result.data;
+        if (data == null) {
+            $(".shortcut").append("<!-- 未登录状态  -->\n" +
+                "            <div class=\"login_out\">\n" +
+                "                <a href=\"login.html\">登录</a>\n" +
+                "                <a href=\"register.html\">注册</a>\n" +
+                "            </div>")
+        }else{
+            $(".shortcut").append("<!-- 登录状态  -->\n" +
+                "            <div class=\"login\">\n" +
+                "            \t\n" +
+                "                <span>欢迎回来，"+data.name+"</span>\n" +
+                "                <a href=\"myfavorite.html?currentPage=1\" class=\"collection\">我的收藏</a>\n" +
+                "                <a href=\"user?action=loginOut\">退出</a>\n" +
+                "            </div>")
+        }
+    },"json")
+    $.post("/travel7/category","action=findAll",function (result) {
+        var data = result.data;
+        $.each(data,function (index,element) {
+            $(".nav").append("<li><a href=\"route_list.html?cid="+element.cid+"&currentPage=1\">"+element.cname+"</a></li>")
+        })
+        $(".nav").append("<li><a href=\"favoriterank.html?currentPage=1\">收藏排行榜</a></li>")
+    },"json")
+
+    function searchRoute() {
+        var keyword = $("#keyword").val();
+        var cid = getParameter("cid");
+        location.href = "route_list.html?keyword="+keyword+"&cid="+cid+"&currentPage=1"
+    }
+
+</script>
+<!-- 头部 start -->
+    <header id="header">
+
+        <div class="top_banner">
+            <img src="images/top_banner.jpg" alt="">
+        </div>
+        <div class="shortcut">
+        </div>
+        <div class="header_wrap">
+            <div class="topbar">
+                <div class="logo">
+                    <a href="/"><img src="images/logo.jpg" alt=""></a>
+                </div>
+                <div class="search">
+                    <input name="" id="keyword" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                    <a href="javascript:;" class="search-button" onclick="searchRoute()">搜索</a>
+                </div>
+                <div class="hottel">
+                    <div class="hot_pic">
+                        <img src="images/hot_tel.jpg" alt="">
+                    </div>
+                    <div class="hot_tel">
+                        <p class="hot_time">客服热线(9:00-6:00)</p>
+                        <p class="hot_num">400-618-9090</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部 end -->
+     <!-- 首页导航 -->
+    <div class="navitem">
+        <ul class="nav">
+            <li class="nav-active"><a href="index.html">首页</a></li>
+        </ul>
+    </div>
+    
